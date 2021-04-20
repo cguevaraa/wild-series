@@ -13,18 +13,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProgramController extends AbstractController
 {
 
+    // /**
+
+    //  * @Route("/programs/", name="program_index")
+
+    //  */
+
+    // public function index(): Response
+    // {
+    //     return $this->render('program/index.html.twig', [
+
+    //         'website' => 'Wild Séries',
+     
+    //      ]);
+    // }
+
     /**
-
-     * @Route("/programs/", name="program_index")
-
+     * @Route("/programs/{id}", methods={"GET"}, requirements={"id"="\d+"}, name="program_id")
      */
 
-    public function index(): Response
+    public function showId(int $id): Response
     {
-        return $this->render('program/index.html.twig', [
-
-            'website' => 'Wild Séries',
-     
-         ]);
+        if (is_int($id)) {
+            return $this->render('program/show.html.twig', ['id' => $id]);
+        } else {
+            throw $this->createNotFoundException('The id does not exist');
+        }
     }
 }
