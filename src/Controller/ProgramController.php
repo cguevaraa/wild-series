@@ -10,23 +10,38 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Routing\Annotation\Route;
 
-class ProgramController extends AbstractController
-{
+use App\Entity\Program;
 
     // /**
 
-    //  * @Route("/programs/", name="program_index")
+    //  * @Route("/programs/", name="program_")
 
     //  */
 
-    // public function index(): Response
-    // {
-    //     return $this->render('program/index.html.twig', [
+class ProgramController extends AbstractController
+{
 
-    //         'website' => 'Wild Séries',
-     
-    //      ]);
-    // }
+    /**
+     * Show all rows from Program's Entity
+     *
+     * @Route("/programs/", name="index")
+     *
+     * @return Response A response instance
+     */
+
+    public function index(): Response
+    {
+        $programs = $this->getDoctrine()
+
+             ->getRepository(Program::class)
+
+             ->findAll();
+
+        return $this->render(
+            'program/index.html.twig',
+            ['programs' => $programs]
+        );
+    }
 
     /**
      * @Route("/programs/{id}", methods={"GET"}, requirements={"id"="\d+"}, name="program_id")
@@ -34,10 +49,23 @@ class ProgramController extends AbstractController
 
     public function showId(int $id): Response
     {
-        if (is_int($id)) {
-            return $this->render('program/show.html.twig', ['id' => $id]);
-        } else {
-            throw $this->createNotFoundException('The id does not exist');
+        $program = $this->getDoctrine()
+
+        ->getRepository(Program::class)
+
+        ->findOneBy(['id' => $id]);
+
+
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program with id : '.$id.' found in program\'s table.'
+            );
         }
+
+        return $this->render('program/show.html.twig', [
+
+        'program' => $program,
+
+    ]);
     }
 }
