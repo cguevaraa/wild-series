@@ -5,7 +5,7 @@
 {% block body %}
 <div class="media">
 
-  <img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
+  {# <img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster"> #}
 
   <div class="media-body">
 
@@ -31,9 +31,9 @@
 </div>
 
 
-<a href="{{ "/programs/" }}">
+<a href="/programs/{{ program.id }}">
 
-    Retour à la liste des programmes
+    Retour
 
 </a>
 
