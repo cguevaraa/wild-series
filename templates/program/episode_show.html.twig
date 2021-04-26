@@ -1,6 +1,6 @@
 {# templates/program/season_show.html.twig #}
 {% extends "base.html.twig" %}
-{% block title %}{{ program.title }} Season {{season.number}}{% endblock %}
+{% block title %}{{ program.title }} Season {{season.number}} Episode {{episode.number}}{% endblock %}
 
 {% block body %}
 <div class="media">
@@ -13,26 +13,15 @@
 
     <h2 class="mt0">Season {{ season.number}} </h2>
 
-    <p>{{ season.description }}</p>
+    <div>
+
+    <h2 class="mt0">Episode {{ episode.number}} </h2>
+
+    <p>{{ episode.synopsis }}</p>
 
   </div>
 
-  {% for episode in episodes %}
-
-  <div class="media-body">
-
-    <a href="/programs/{{program.id}}/seasons/{{season.id}}/episodes/{{episode.id}}" 
-    
-    class="mt-0">Episode {{ episode.number }} </a>
-
-  </div>
-
-  {% endfor %}
-
-</div>
-
-
-<a href="/programs/{{ program.id }}">
+<a href="/programs/{{ program.id }}/seasons/{{ season.number }}">
 
     Retour
 

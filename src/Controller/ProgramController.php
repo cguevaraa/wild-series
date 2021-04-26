@@ -124,7 +124,22 @@ class ProgramController extends AbstractController
             ]);
     }
 
+    /**
+     * @Route("/programs/{programId}/seasons/{seasonId}/episodes/{episodeId}", methods={"GET"}, requirements={"programId"="\d+"}, name="program_episode_show")
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programId": "id"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonId": "id"}})
+     * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeId": "id"}})
+     */
     public function showEpisode(Program $program, Season $season, Episode $episode)
     {
+        return $this->render('program/episode_show.html.twig', [
+
+            'program' => $program,
+    
+            'season' => $season,
+
+            'episode' => $episode,
+    
+            ]);
     }
 }
