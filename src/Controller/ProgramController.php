@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -18,6 +20,8 @@ use App\Entity\Season;
 
 use App\Entity\Episode;
 
+use App\Form\ProgramType;
+
     // /**
 
     //  * @Route("/programs/", name="program_")
@@ -26,6 +30,64 @@ use App\Entity\Episode;
 
 class ProgramController extends AbstractController
 {
+
+        /**
+
+     * The controller for the category add form
+     * Display the form or deal with it
+
+     *
+
+     * @Route("/programs/new", name="new")
+
+     */
+
+    public function new(Request $request) : Response
+    {
+
+        // Create a new Program Object
+
+        $program = new Program();
+
+        // Create the associated Form
+
+        $form = $this->createForm(ProgramType::class, $program);
+
+        // Get data from HTTP request
+
+        $form->handleRequest($request);
+
+        // Was the form submitted ?
+
+        if ($form->isSubmitted()) {
+
+            // Deal with the submitted data
+
+            // Get the Entity Manager
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            // Persist Program Object
+
+            $entityManager->persist($program);
+
+            // Flush the persisted object
+
+            $entityManager->flush();
+
+            // Finally redirect to categories list
+
+            return $this->redirectToRoute('index');
+        }
+
+        // Render the form
+
+        return $this->render('program/new.html.twig', [
+
+            "form" => $form->createView(),
+
+        ]);
+    }
 
     /**
      * Show all rows from Program's Entity
