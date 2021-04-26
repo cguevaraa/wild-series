@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Routing\Annotation\Route;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use App\Entity\Program;
 
 use App\Entity\Season;
@@ -51,18 +53,20 @@ class ProgramController extends AbstractController
      * @Route("/programs/{id}", methods={"GET"}, requirements={"id"="\d+"}, name="program_id")
      */
 
-    public function show(int $id): Response
+    public function show(Program $program): Response
     {
-        $program = $this->getDoctrine()
+        // $program = $this->getDoctrine()
 
-        ->getRepository(Program::class)
+        // ->getRepository(Program::class)
 
-        ->findOneBy(['id' => $id]);
+        // ->findOneBy(['id' => $id]);
+
+
 
 
         if (!$program) {
             throw $this->createNotFoundException(
-                'No program with id : '.$id.' found in program\'s table.'
+                'No program with id : '.$program.' found in program\'s table.'
             );
         }
 
@@ -79,23 +83,26 @@ class ProgramController extends AbstractController
 
     /**
      * @Route("/programs/{programId}/seasons/{seasonId}", methods={"GET"}, requirements={"programId"="\d+"}, name="program_season_show")
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programId": "id"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonId": "id"}})
      */
 
-    public function showSeason(int $programId, int $seasonId)
+    public function showSeason(Program $program, Season $season)
     {
-        // Get the program passed as parameter
-        $program = $this->getDoctrine()
+        // // Get the program passed as parameter
+        // $program = $this->getDoctrine()
 
-        ->getRepository(Program::class)
+        // ->getRepository(Program::class)
 
-        ->findOneBy(['id' => $programId]);
+        // ->findOneBy(['id' => $programId]);
 
-        //Get the season associated
-        $season = $this->getDoctrine()
+        // //Get the season associated
+        // $season = $this->getDoctrine()
 
-        ->getRepository(Season::class)
+        // ->getRepository(Season::class)
 
-        ->findOneBy(['program' => $programId]);
+        // ->findOneBy(['program' => $programId]);
+
 
         //Get the episodes from the selected season
         $episodes = $this->getDoctrine()
@@ -115,5 +122,9 @@ class ProgramController extends AbstractController
             'episodes' => $episodes,
     
             ]);
+    }
+
+    public function showEpisode(Program $program, Season $season, Episode $episode)
+    {
     }
 }
