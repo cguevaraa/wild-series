@@ -6,9 +6,12 @@ use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ProgramRepository::class)
+ * @UniqueEntity("title")
  */
 class Program
 {
@@ -21,6 +24,8 @@ class Program
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(max="255", maxMessage="The {{ value }} is too long, max limit: {{ limit }} characters")
      */
     private $title;
 
@@ -31,6 +36,7 @@ class Program
 
     /**
      * @ORM\Column(type="string", length=2000, nullable=true)
+     * @Assert\NotBlank()
      */
     private $poster;
 
